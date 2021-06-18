@@ -1,7 +1,0 @@
-1020, zapato Nike Run 12,2, 230000,6
-1021, Camisa, 1, 230000,6
-1022, aguacate hass, 3, 230000,6
-1023, zapato Nike Run 12,1,230000,6
-1024, zapato Nike Run 12,5,230000,5
-1025, zapato Nike Run 12,3,230000,4
-1026, zapato Nike Run 12,2,230000,3
