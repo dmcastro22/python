@@ -6,7 +6,7 @@ def limpiar():
     else:
         # for windows platfrom
         os.system('cls')
-
+contadorveces = 0
 opcion= 0
 menu = {'1':'Cambiar contraseña',
         '2':'Ingresar coordenadas actuales',
@@ -16,11 +16,11 @@ menu = {'1':'Cambiar contraseña',
         '6':'Elegir opcion de menu favorita',
         '7':'Cerrar sesión'}
 menuActualizado = {}
-while opcion != '7':
+while opcion != 7:
  for key in menu:
   print (key, ":", menu[key])
- opcion= input("Elija una opción: ")
- if opcion == '6':
+ opcion= int(input("Elija una opción: "))
+ if opcion == 6:
   print("Seleccione opción favorita: ")
   fav= int(input("Seleccione una opción del 1 al 5: "))
   if fav >= 0 and fav <= 5:
@@ -43,12 +43,15 @@ while opcion != '7':
          print('Error')  
       else:
         print('Error')
-  else:
+      contadorveces += 1
+      print(contadorveces)
+ elif opcion > 0 and opcion <= 5 :
+      print('Usted ha elegido la opcion',(opcion))
+      break
+ elif opcion == 0 or opcion > 7:
       print('Error')
-
-
-limpiar()
-
+ elif opcion == 7:     
+      print('Hasta pronto')
 
 
 

@@ -7,10 +7,7 @@ if adiv1 == 4:
        print('Error2')  
 else:
     print('Error1')
-#if adiv2 == 7:
-  #  print('Elija una opciòn: ')
-#else:
-  # print('Error')
+
 
 
 
@@ -21,3 +18,12 @@ else:
       # for windows platfrom
     # _ = os.system('cls')
 
+      menuActualizado['1'] = menu[str(fav)]
+      posicion = 2
+      for key in menu:
+        if(key != str(fav)):
+         menuActualizado[str(posicion)] = menu[key]
+         posicion+=1
+      menu.clear()
+      menu = menuActualizado.copy()
+      menuActualizado.clear()
