@@ -29,6 +29,31 @@ def cambiar_contrasena(contrasenavieja):
      print('Error')
      
   return contrasenaactual
+def ingresar_coordenadas():
+    coordenadas = {'Trabajo':[0,0],
+                  'Casa':[0,0],
+                  'Parque':[0,0]}
+    esexitoso= False
+    try: 
+        for key in coordenadas:
+            latitud = 0
+            longitud = 0
+            latitud=float(input('Ingrese latitud: '))
+            if latitud >= 2.548 and latitud <= 2.766:
+                longitud=float(input('Ingrese longitud: '))
+                if longitud >= -76.879 and longitud <= -76.493:
+                    coordenadas[key] = [latitud,longitud] 
+                    esexitoso=True
+                else:
+                    print('Error coordenada')
+                    break
+            else:
+                print('Error coordenada')
+                break
+    except:
+        print('Error')
+    return esexitoso
+
 
 contadorveces = 0
 opcion= 0
@@ -64,6 +89,10 @@ if nombreusuario == "51647":
          #Se da la opción
          if opcion == 1:
            contrasena=cambiar_contrasena(contrasena)
+         elif opcion == 2:
+           fueexitoso=ingresar_coordenadas()
+            if fueexitoso== False:
+              break 
          elif opcion == 6:
           print("Seleccione opción favorita: ")
           fav= int(input("Seleccione una opción del 1 al 5: ")) #El cliente debe ingresar un numero del 1 al 5
