@@ -1,4 +1,9 @@
 import os
+
+coordenadas = {'Trabajo':[0,0],    #
+               'Casa':[0,0],          #Diccionario
+               'Parque':[0,0]}     #
+
 def limpiar():
     if os.name == 'posix':
         os.system('clear')
@@ -10,6 +15,7 @@ def cambiar_contrasena(contrasenavieja): #funcion con parametro--> contrasenavie
   contrasenaactual = 0  #variable
   contrasenanueva = 0    #variable
   confirmenueva = 0      #variable 
+  esexitoso = False
   contrasenaactual=int(input('Ingrese contraseña actual:')) #input de la contraseña actual
   if contrasenaactual != contrasenavieja:  #si la contrasena actual es diferente a contrasena vieja entonces
     limpiar()                     #limpia pantalla
@@ -21,6 +27,7 @@ def cambiar_contrasena(contrasenavieja): #funcion con parametro--> contrasenavie
       limpiar()          #limpia pantalla
       contrasenaactual=contrasenanueva   #la contrasena actual y la contrasena nueva seran iguales
       print('Contraseña cambiada con éxito')  # se imprime este mensaje en pantalla
+      esexitoso = True
     else:   #sino
       limpiar()  #limpia pantalla
       print('Error')  #imprime error
@@ -28,11 +35,13 @@ def cambiar_contrasena(contrasenavieja): #funcion con parametro--> contrasenavie
      limpiar()   #limpia pantalla
      print('Error') #imprime error
      
-  return contrasenaactual #me devuelve contrasenaactual de acuerdo al requerimiento estipulado
+  return contrasenaactual, esexitoso #me devuelve contrasenaactual de acuerdo al requerimiento estipulado
+
 def ingresar_coordenadas():  #funcion sin parametro
-    coordenadas = {'Trabajo':[0,0],    #
-                   'Casa':[0,0],          #Diccionario
-                   'Parque':[0,0]}     #
+
+    global coordenadas
+
+    actualizar = ()
     esexitoso= False   #variable ensayo 1
     try: #Inicio de excepvion
         for key in coordenadas: #para key en el diccionario coordenadas
@@ -43,17 +52,22 @@ def ingresar_coordenadas():  #funcion sin parametro
                 longitud=float(input('Ingrese longitud: '))  #se ejecuta el input para preguntar por la longitud
                 if longitud >= -76.879 and longitud <= -76.493: # si longitud es may o = a -76.879 y longitud es men o = a -76.493 entonces
                     coordenadas[key] = [latitud,longitud]  #que las claves del diccionario coordenadas sean = a los valotes para lat y lon
-                    esexitoso=True #variable ensayo 2 --> para confirmar si el codigo entra
                 else:
-                    print('Error coordenada') #si no, imprima error coordenada
+                    print('Error coordenada') #si no, imp2.rima error coordenada
                     break
             else:
-                print('Error coordenada')  #si no, imprima error coordenada
+                print('Error coordenada')  #si no, imprim2.a error coordenada
                 break
-        print(coordenadas) #finalmente, imprima las coordenadas ingresadas y/o almacenadas
-        print('coordenada [latitud, longitud] 1:', coordenadas['Trabajo'])
-        print('coordenada [latitud, longitud] 2:', coordenadas['Casa'])
-        print('coordenada [latitud, longitud] 3:', coordenadas['Parque'])
+        coordenada=coordenadas['Trabajo']
+        print('coordenada [latitud, longitud] 1 :', "['",coordenada[0],"','",coordenada[1],"']")
+        long1=coordenada[1]
+        coordenada=coordenadas['Casa']
+        print('coordenada [latitud, longitud] 2 :', "['",coordenada[0],"','",coordenada[1],"']")
+        long2=coordenada[1]
+        coordenada=coordenadas['Parque']        
+        print('coordenada [latitud, longitud] 3 :', "['",coordenada[0],"','",coordenada[1],"']")
+        long3=coordenada[1]
+
         if long1 > long2 and long1 > long3:
             print ('El que esta más al oriente es: ', long1)
         if long2 > long1 and long2 > long3:    
@@ -68,48 +82,44 @@ def ingresar_coordenadas():  #funcion sin parametro
             print ('El que esta más al occidente es: ', long3)  
 
         actualizar = float(input('Presione 1,2 o 3 para actualizar la respectiva coordenada. Presione 0 para regresar al menu: '))
-        if actualizar == 1:            
+        if actualizar >= 1 and actualizar <= 3:
+            tipo_coordenada = ''
+            if actualizar == 1:
+                tipo_coordenada = 'Trabajo'
+            if actualizar == 2:
+                tipo_coordenada = 'Casa'                
+            if actualizar == 3:
+                tipo_coordenada = 'Parque'
+
             latitud = 0    #variable latitus
             longitud = 0   #variable longitud
             latitud=float(input('Ingrese latitud: '))  #input para ingresar el valor para latitud
             if latitud >= 2.548 and latitud <= 2.766:  # si latitud es may o = a 2.548 y latitud es men o = a 2.766 entonces
                 longitud=float(input('Ingrese longitud: '))  #se ejecuta el input para preguntar por la longitud
                 if longitud >= -76.879 and longitud <= -76.493: # si longitud es may o = a -76.879 y longitud es men o = a -76.493 entonces
-                    coordenadas['Trabajo'] = [latitud,longitud]  #que las claves del diccionario coordenadas sean = a los valotes para lat y lon
+                    coordenadas[tipo_coordenada] = [latitud,longitud]  #que las claves del diccionario coordenadas sean = a los valotes para lat y lon
                     esexitoso=True #variable ensayo 2 --> para confirmar si el codigo entr
-                    limpiar() 
-                    menu                       
-        if actualizar == 2:
-            latitud = 0    #variable latitus
-            longitud = 0   #variable longitud
-            latitud=float(input('Ingrese latitud: '))  #input para ingresar el valor para latitud
-            if latitud >= 2.548 and latitud <= 2.766:  # si latitud es may o = a 2.548 y latitud es men o = a 2.766 entonces
-                longitud=float(input('Ingrese longitud: '))  #se ejecuta el input para preguntar por la longitud
-                if longitud >= -76.879 and longitud <= -76.493: # si longitud es may o = a -76.879 y longitud es men o = a -76.493 entonces
-                    coordenadas['Casa'] = [latitud,longitud]  #que las claves del diccionario coordenadas sean = a los valotes para lat y lon
-                    esexitoso=True #variable ensayo 2 --> para confirmar si el codigo entra
                     limpiar()
-                    menu                    
-        if actualizar == 3:
-            latitud = 0    #variable latitus
-            longitud = 0   #variable longitud
-            latitud=float(input('Ingrese latitud: '))  #input para ingresar el valor para latitud
-            if latitud >= 2.548 and latitud <= 2.766:  # si latitud es may o = a 2.548 y latitud es men o = a 2.766 entonces
-                longitud=float(input('Ingrese longitud: '))  #se ejecuta el input para preguntar por la longitud
-                if longitud >= -76.879 and longitud <= -76.493: # si longitud es may o = a -76.879 y longitud es men o = a -76.493 entonces
-                    coordenadas['Parque'] = [latitud,longitud]  #que las claves del diccionario coordenadas sean = a los valotes para lat y lon
-                    esexitoso=True #variable ensayo 2 --> para confirmar si el codigo entra
-                    limpiar()  
-                    menu 
+                else:
+                    limpiar()
+                    print('Error actualización') #si no, imp2.rima error coordenada
+            else:
+                limpiar()
+                print('Error actualización')  #si no, imprim2.a error coordenada      
+        elif actualizar == 0:
+            limpiar()
+            esexitoso=True
         else:
             limpiar()
-            print('Error Actualización')
+            print('Error actualización')      
     except:
         print('Error')   # la excepcion, si no se cumple el try sería imprimir el mensaje de error en pantalla
-
     
-    return esexitoso # me devuelve el valor de esexitoso, en este caso true or false si entra o no a la condicion
+    return esexitoso
 
+def ubicar_zona ():
+  global mtx_zona
+  print('ubicar zona wifi')
 
 contadorveces = 0 #variable contador veces
 opcion= 0         # variable opcion
@@ -144,11 +154,17 @@ if nombreusuario == "51647": # si variable nombreusuario es igual a 51647 entonc
          opcion= int(input("Elija una opción: ")) #aparece en pantalla el mensaje para elegir una opcion del menu
          #Se da la opción
          if opcion == 1:  #si la variable opcion es igual a 1 entonces
-           contrasena=cambiar_contrasena(contrasena)  #que la variable contraseña sea igual a la funcion cambiar contrasena con el parametro contrasena
+           contrasena, fueexitoso =cambiar_contrasena(contrasena)  #que la variable contraseña sea igual a la funcion cambiar contrasena con el parametro contrasena
+           if fueexitoso == False: # si la variable fue exitoso es igual a False entonces
+             break  # se quiebra el proceso y se para el bucle
          elif opcion == 2: #sino si opcion es igual a 2 entonces
            fueexitoso=ingresar_coordenadas() # que la variable fue exitoso sea igual a la funcion ingresar contrasena sin parametro
            if fueexitoso == False: # si la variable fue exitoso es igual a False entonces
             break  # se quiebra el proceso y se para el bucle
+         elif opcion == 3:
+           fueexitoso=ubicar_zona()
+           if fueexitoso == False:
+            break
          elif opcion == 6: #sino si opcion es igual a 6 entonces
           print("Seleccione opción favorita: ")  #imprima en pantalla selecciones opcion favorita
           fav= int(input("Seleccione una opción del 1 al 5: ")) #El cliente debe ingresar un numero del 1 al 5
@@ -189,7 +205,8 @@ if nombreusuario == "51647": # si variable nombreusuario es igual a 51647 entonc
               limpiar()
               print('Error')
               break 
-         elif opcion == 7:     
+         elif opcion == 7:
+            limpiar()
             print('Hasta pronto')     
       else:
        print('Error')
