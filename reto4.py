@@ -1,8 +1,15 @@
 import os
+import math
+import operator
 
 coordenadas = {'Trabajo':[0,0],    #
                'Casa':[0,0],          #Diccionario
                'Parque':[0,0]}     #
+
+dicc_zona = {'zona 1': [2.698,-76.680,63],
+            'zona 2': [2.724,-76.693,20],
+            'zona 3': [2.606,-76.742,680],
+            'zona 4': [2.698,-76.690,15]}
 
 def limpiar():
     if os.name == 'posix':
@@ -10,6 +17,72 @@ def limpiar():
     else:
         # for windows platfrom
         os.system('cls')
+
+def haversine(lat1, lon1, lat2, lon2):
+    rad=math.pi/180
+    dlat=lat2-lat1
+    dlon=lon2-lon1
+    R=6372.795477598
+    a=(math.sin(rad*dlat/2))**2 + math.cos(rad*lat1)*math.cos(rad*lat2)*(math.sin(rad*dlon/2))**2
+    distancia=2*R*math.asin(math.sqrt(a))
+    return distancia*1000
+
+def calc_distancia(latitud, longitud):
+  esexitoso=False
+  # recibe la ubicacion actual del usuario X
+  # compara informacion entre locacion y redes
+  diccionario3= {}
+  for key in dicc_zona:
+    distancia = haversine(latitud, longitud, dicc_zona[key][0], dicc_zona[key][1])        
+    diccionario3[dicc_zona[key][2]]=[distancia,dicc_zona[key][0], dicc_zona[key][1]]
+    #crear diccionarion con clave usuario y valor distancia X
+    #ordenar diccionario por distancia
+  sortedDict = sorted(diccionario3.items(), key=operator.itemgetter(1))
+  sortedDict.pop(2)
+  sortedDict.pop(2)
+  sortedDict.sort(key=lambda x: x[0]) 
+
+  print('Zonas wifi cercanas con menos usuarios')
+  print('La zona wifi 1: ubicada en [',sortedDict[0][1][1],sortedDict[0][1][2],'] a',sortedDict[0][1][0],'metros, tiene en promedio',sortedDict[0][0],'usuarios')
+  print('La zona wifi 2: ubicada en [',sortedDict[1][1][1],sortedDict[1][1][2],'] a',sortedDict[1][1][0],'metros, tiene en promedio',sortedDict[1][0],'usuarios')
+
+  indicaciones=float(input('Elija 1 o 2 para recibir indicaciones de llegada: '))
+  if indicaciones == 1: 
+    if latitud < sortedDict[0][1][1]:
+      print ('Para llegar a la zona wifi dirigirse primero al norte')
+    else:
+      print ('Para llegar a la zona wifi dirigirse primero al sur')
+    if longitud < sortedDict[0][1][2]:
+      print ('y luego hacia el oriente')
+    else:
+      print ('y luego hacia el occidente')  
+
+    tiempo1pie=(sortedDict[0][1][0]/0.483)
+    tiempo1auto=(sortedDict[0][1][0]/20.83)
+    print('El tiempo promedio a pie es:',tiempo1pie, 'minutos y el tiempo promedio en auto es:',tiempo1auto,'minutos')
+
+  if indicaciones == 2:
+    if latitud < sortedDict[1][1][1]:
+      print ('Para llegar a la zona wifi dirigirse primero al norte')
+    else:
+      print ('Para llegar a la zona wifi dirigirse primero al sur')
+    if longitud < sortedDict[1][1][2]:
+      print ('y luego hacia el oriente')
+    else:
+      print ('y luego hacia el occidente')    
+
+    tiempo2pie=(sortedDict[1][1][0]/0.483)
+    tiempo2auto=(sortedDict[1][1][0]/20.83)    
+    print('El tiempo promedio a pie es:',tiempo2pie, 'minutos y el tiempo promedio en auto es:',tiempo2auto,'minutos')
+
+  if indicaciones != 1 and indicaciones != 2:
+    limpiar()
+    print('Error zona wifi')
+  else:
+    principal=float(input('Presione 0 para salir: '))
+    if principal == 0:
+        esexitoso=True
+  return esexitoso
 
 def cambiar_contrasena(contrasenavieja): #funcion con parametro--> contrasenavieja
   contrasenaactual = 0  #variable
@@ -81,7 +154,8 @@ def ingresar_coordenadas():  #funcion sin parametro
         if long3 < long1 and long3 < long2:    
             print ('El que esta más al occidente es: ', long3)  
 
-        actualizar = float(input('Presione 1,2 o 3 para actualizar la respectiva coordenada. Presione 0 para regresar al menu: '))
+        esexitoso=True
+        """ actualizar = float(input('Presione 1,2 o 3 para actualizar la respectiva coordenada. Presione 0 para regresar al menu: '))
         if actualizar >= 1 and actualizar <= 3:
             tipo_coordenada = ''
             if actualizar == 1:
@@ -105,13 +179,13 @@ def ingresar_coordenadas():  #funcion sin parametro
                     print('Error actualización') #si no, imp2.rima error coordenada
             else:
                 limpiar()
-                print('Error actualización')  #si no, imprim2.a error coordenada      
+                print('Error ubicación')  #si no, imprim2.a error coordenada      
         elif actualizar == 0:
             limpiar()
             esexitoso=True
         else:
             limpiar()
-            print('Error actualización')      
+            print('Error actualización') """      
     except:
         print('Error')   # la excepcion, si no se cumple el try sería imprimir el mensaje de error en pantalla
     
@@ -119,8 +193,32 @@ def ingresar_coordenadas():  #funcion sin parametro
 
 def ubicar_zona ():
   global mtx_zona
-  print('ubicar zona wifi')
+  global coordenadas
+  esexitoso= False
+  if coordenadas['Trabajo'] == [0,0] and coordenadas['Casa'] == [0,0] and coordenadas['Parque'] == [0,0]:
+    limpiar() 
+    print('Error sin registro de coordenadas')
+  else: 
+    coordenada=coordenadas['Trabajo']
+    print('coordenada [latitud, longitud] 1 :', "['",coordenada[0],"','",coordenada[1],"']")
+    coordenada_casa=coordenadas['Casa']
+    print('coordenada [latitud, longitud] 2 :', "['",coordenada_casa[0],"','",coordenada_casa[1],"']")
+    coordenada=coordenadas['Parque']        
+    print('coordenada [latitud, longitud] 3 :', "['",coordenada[0],"','",coordenada[1],"']") 
 
+    ubicacion=float(input('Por favor elija su ubicación actual (1,2 ó 3) para calcular la distancia a los puntos de conexión: '))
+    if ubicacion == 1:
+      esexitoso= calc_distancia(*coordenadas['Trabajo']) #acceder al valor de una lista 
+    elif ubicacion == 2:
+      esexitoso= calc_distancia(coordenada_casa[0], coordenada_casa[1]) #acceder al valor de una lista   
+    elif ubicacion == 3:
+      esexitoso= calc_distancia(coordenadas['Parque'][0],coordenadas['Parque'][1]) #acceder al valor de una lista
+    else:
+      limpiar()
+      print('Error ubicación')
+      esexitoso=False
+  return esexitoso
+     
 contadorveces = 0 #variable contador veces
 opcion= 0         # variable opcion
 menu = {'1':'Cambiar contraseña',
