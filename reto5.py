@@ -11,6 +11,12 @@ dicc_zona = {'zona 1': [2.698,-76.680,63],
             'zona 3': [2.606,-76.742,680],
             'zona 4': [2.698,-76.690,15]}
 
+dicc_final = {'actual': ['latitud', 'longitud'],
+              'zonawifi1': ['latitud','longitud','usuarios'],
+              'recorrido': ['distancia','mediotransporte','tiempopromedio']}
+
+ubicacion=0
+
 def limpiar():
     if os.name == 'posix':
         os.system('clear')
@@ -82,7 +88,7 @@ def calc_distancia(latitud, longitud):
     principal=float(input('Presione 0 para salir: '))
     if principal == 0:
         esexitoso=True
-return esexitoso
+  return esexitoso 
 
 def cambiar_contrasena(contrasenavieja): #funcion con parametro--> contrasenavieja
   contrasenaactual = 0  #variable
@@ -219,7 +225,36 @@ def ubicar_zona ():
       print('Error ubicación')
       esexitoso=False
   return esexitoso
+
+def guardar_archivo():
+    global ubicacion
+    esexitoso=False
+    if coordenadas['Trabajo'] == [0,0] and coordenadas['Casa'] == [0,0] and coordenadas['Parque'] == [0,0] and ubicacion == 0:
+     limpiar() 
+     print('Error de alistamiento')
+    else:
+        print(dicc_final)
+        confirmacion=float(input('¿Está de acuerdo con la información a exportar? Presione 1 para confirmar, 0 para regresar al menú principal: '))
+        if confirmacion == 0:
+            limpiar()
+            esexitoso=True
+        if confirmacion == 1:
+            limpiar()          
+            print('Exportando archivo')
+            esexitoso=False
+
+    return esexitoso
      
+  
+
+def actualizar_registros():
+    datos=float(input('Datos de coordenadas para zonas wifi actualizados, presione 0 para regresar al menú principal: '))
+    if datos == 0:
+        limpiar()
+        esexitoso=True
+
+
+
 contadorveces = 0 #variable contador veces
 opcion= 0         # variable opcion
 menu = {'1':'Cambiar contraseña',
@@ -264,6 +299,14 @@ if nombreusuario == "51647": # si variable nombreusuario es igual a 51647 entonc
            fueexitoso=ubicar_zona()
            if fueexitoso == False:
             break
+         elif opcion == 4:
+             fueexitoso=guardar_archivo()
+             if fueexitoso == False:
+                 break
+         elif opcion == 5:
+             fueexitoso=actualizar_registros()
+             if fueexitoso == False:
+                 break
          elif opcion == 6: #sino si opcion es igual a 6 entonces
           print("Seleccione opción favorita: ")  #imprima en pantalla selecciones opcion favorita
           fav= int(input("Seleccione una opción del 1 al 5: ")) #El cliente debe ingresar un numero del 1 al 5
